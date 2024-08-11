@@ -13,12 +13,16 @@ class DuckDuckGoTextSearch:
     name = "DuckDuckGo Search"
     description = "A tool that uses DuckDuckGo to search for information."
 
+    def __init__(self, search_engine: DDGS) -> None:
+        self.search_engine = search_engine
+
     def run(self, state: DDGSearchState) -> dict[str, Any]:
         region = "ja-JP"
-        words = "weather tomorrow"
-        results = DDGS().text(
+        words = state.parsed_query or ""
+        results = self.search_engine.text(
             keywords=words,
             region=region,
+            max_results=10,
         )
         search_result = []
         for result in results:
